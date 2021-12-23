@@ -1,0 +1,7 @@
+---
+exclude_paths:
+  - "__init__.py"
+  - "asgi.py"
+  - "asgi.py"
+  - "**.min.js"
+  - "app/templates/email/**"

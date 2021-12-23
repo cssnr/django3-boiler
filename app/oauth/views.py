@@ -14,9 +14,7 @@ logger = logging.getLogger('app')
 
 
 def oauth_start(request):
-    """
-    View  /oauth/
-    """
+    # View  /oauth/
     request.session['login_redirect_url'] = get_next_url(request)
     params = {
         'client_id': settings.OAUTH_CLIENT_ID,
@@ -31,9 +29,7 @@ def oauth_start(request):
 
 @require_http_methods(['POST'])
 def oauth_local(request):
-    """
-    View  /oauth/local/
-    """
+    # View  /oauth/local/
     request.session['login_redirect_url'] = get_next_url(request)
     form = LoginForm(request.POST)
     if not form.is_valid():
@@ -53,9 +49,7 @@ def oauth_local(request):
 
 
 def oauth_callback(request):
-    """
-    View  /oauth/callback/
-    """
+    # View  /oauth/callback/
     if 'code' not in request.GET:
         messages.warning(request, 'Uer aborted or error during login.')
         return HttpResponseRedirect(get_login_redirect_url(request))
@@ -72,9 +66,7 @@ def oauth_callback(request):
 
 @require_http_methods(['POST'])
 def oauth_logout(request):
-    """
-    View  /oauth/logout/
-    """
+    # View  /oauth/logout/
     next_url = get_next_url(request)
     # Hack to prevent login loop when logging out on a secure page
     logger.debug('next_url: %s', next_url.split('/')[1])
@@ -87,9 +79,7 @@ def oauth_logout(request):
 
 
 def login_user(request, profile):
-    """
-    Login or create user
-    """
+    # Login or create user
     user, _ = CustomUser.objects.get_or_create(username=profile['id'])
     update_profile(user, profile)
     login(request, user)
@@ -97,9 +87,7 @@ def login_user(request, profile):
 
 
 def get_access_token(code):
-    """
-    Post OAuth code and Return access_token
-    """
+    # Post OAuth code and Return access_token
     url = f'{settings.DISCORD_API_URL}/oauth2/token'
     data = {
         'client_id': settings.OAUTH_CLIENT_ID,
@@ -118,9 +106,7 @@ def get_access_token(code):
 
 
 def get_user_profile(data):
-    """
-    Get Profile for Authenticated User
-    """
+    # Get Profile for Authenticated User
     url = f'{settings.DISCORD_API_URL}/users/@me'
     headers = {'Authorization': f"Bearer {data['access_token']}"}
     r = requests.get(url, headers=headers, timeout=10)
@@ -141,9 +127,7 @@ def get_user_profile(data):
 
 
 def update_profile(user, profile):
-    """
-    Update Django user profile with provided data
-    """
+    # Update Django user profile with provided data
     user.first_name = profile['username']
     user.last_name = profile['discriminator']
     user.avatar_hash = profile['avatar']
@@ -153,9 +137,7 @@ def update_profile(user, profile):
 
 
 def get_next_url(request):
-    """
-    Determine 'next' parameter
-    """
+    # Determine 'next' parameter
     if 'next' in request.GET:
         return request.GET['next']
     if 'next' in request.POST:
@@ -166,9 +148,7 @@ def get_next_url(request):
 
 
 def get_login_redirect_url(request):
-    """
-    Determine 'login_redirect_url' parameter
-    """
+    # Determine 'login_redirect_url' parameter
     next_url = '/'
     if 'login_redirect_url' in request.session:
         next_url = request.session['login_redirect_url']

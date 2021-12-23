@@ -27,17 +27,14 @@ const cookie = {
         }
         return null;
     },
-}
+};
 
 // Ghetto detect and set dark mode
 if (cookie.get("theme") === null) {
-    console.log("cookie theme not set");
     if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        cookie.add("theme", "dark", 365) // default dark mode
-        console.log("prefers-color-scheme: dark");
+        cookie.add("theme", "dark", 365); // default dark mode
         location.reload();
     } else {
-        cookie.add("theme", "light", 365) // default light mode
-        console.log("prefers-color-scheme: light");
+        cookie.add("theme", "light", 365); // default light mode
     }
 }

@@ -5,14 +5,10 @@ logger = logging.getLogger('app')
 
 
 def home_view(request, **kwargs):
-    """
-    View  /
-    """
+    # View /
     return render(request, 'home.html')
 
 
 def about_view(request, **kwargs):
-    """
-    View  /about/
-    """
+    # View /about/
     return render(request, 'about.html')

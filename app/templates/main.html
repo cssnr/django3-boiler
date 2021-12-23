@@ -24,7 +24,6 @@
         <meta property="og:image" content="{{ request.META|get_scheme }}://{{ request.META.HTTP_HOST }}{% static 'images/logo128.webp' %}">
     {% endblock %}
 
-    <script src="{% static 'jscookie/js.cookie.min.js' %}"></script>
     <script src="{% static 'main/js/theme.js' %}"></script>
     <link rel="icon" href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static request.COOKIES.theme|theme_css %}">
