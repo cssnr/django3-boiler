@@ -6,4 +6,4 @@ exclude_paths:
   - "**/*.min.js"
   - "**/*.min.css"
   - "**/migrations/**"
-  - "app/templates/email/**/*"
+  - "app/templates/email/**"
