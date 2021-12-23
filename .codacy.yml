@@ -1,9 +1,9 @@
 ---
 exclude_paths:
-  - "__init__.py/**/*"
-  - "asgi.py/**/*"
-  - "asgi.py/**/*"
-  - "**.min.js"
-  - "**.min.css"
+  - "**/__init__.py"
+  - "**/asgi.py"
+  - "**/asgi.py"
+  - "**/*.min.js"
+  - "**/*.min.css"
   - "**/migrations/**"
-  - "app/templates/email/**"
+  - "app/templates/email/**/*"
