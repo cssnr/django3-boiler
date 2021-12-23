@@ -23,7 +23,7 @@ $(document).ready(function() {
     // Local login form handler
     $("#login-form").on("submit", function(event) {
         event.preventDefault();
-        if ($("#login-submit").hasClass("disabled")) { return; }
+        if ($("#login-submit").hasClass("disabled")) { return false; }
         var formData = new FormData($(this)[0]);
         $.ajax({
             url: $("#login-form").attr("action"),
