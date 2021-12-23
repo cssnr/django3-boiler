@@ -1,6 +1,6 @@
 [![Discord](https://img.shields.io/discord/899171661457293343?color=7289da&label=discord&logo=discord&logoColor=white&style=flat)](https://discord.gg/wXy6m2X8wY)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dbceb84a912b4722a55d9cb0f2fcdc54)](https://www.codacy.com/gh/cssnr/django3-boiler/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cssnr/django3-boiler&amp;utm_campaign=Badge_Grade)
-[![](https://repository-images.githubusercontent.com/441127011/501ead8a-f34b-4fe1-9826-d98936e39c70)](https://zerowow.games/)
+[![](https://repository-images.githubusercontent.com/441127011/501ead8a-f34b-4fe1-9826-d98936e39c70)](https://github.com/cssnr/django3-boiler)
 # Django Boiler
 
 Django 3.2 Boiler Plate using Bootstrap 5, Celery 5 and much more...
