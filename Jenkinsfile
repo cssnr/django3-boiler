@@ -21,6 +21,7 @@ pipeline {
         BASE_NAME = "${GIT_ORG}-${GIT_REPO}"
         SERVICE_NAME = "${BASE_NAME}"
         NFS_HOST = "nfs01.cssnr.com"
+        NFS_BASE = "/data/docker"
     }
     stages {
         stage('Init') {
@@ -47,7 +48,7 @@ pipeline {
             }
             environment {
                 STACK_NAME = "dev-${SERVICE_NAME}"
-                NFS_DIRECTORY = "${STACK_NAME}"
+                NFS_DIRECTORY = "${NFS_BASE}/${STACK_NAME}"
                 TRAEFIK_HOST = "`djboiler-dev.sapps.me`"
                 ENV_FILE = "deploy-configs/services/${SERVICE_NAME}/dev.env"
             }
@@ -74,7 +75,7 @@ pipeline {
             }
             environment {
                 STACK_NAME = "prod-${SERVICE_NAME}"
-                NFS_DIRECTORY = "${STACK_NAME}"
+                NFS_DIRECTORY = "${NFS_BASE}/${STACK_NAME}"
                 TRAEFIK_HOST = "`djboiler.sapps.me`"
                 ENV_FILE = "deploy-configs/services/${SERVICE_NAME}/prod.env"
             }

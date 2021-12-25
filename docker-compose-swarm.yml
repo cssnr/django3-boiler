@@ -100,7 +100,7 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${NFS_HOST},rw"
-      device: ":/data/docker/${NFS_DIRECTORY}"
+      device: ":${NFS_DIRECTORY}"
   flower_data:
   redis_data:
 

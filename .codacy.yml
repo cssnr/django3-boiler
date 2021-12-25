@@ -2,7 +2,7 @@
 exclude_paths:
   - "**/__init__.py"
   - "**/asgi.py"
-  - "**/asgi.py"
+  - "**/wsgi.py"
   - "**/*.min.js"
   - "**/*.min.css"
   - "**/migrations/**"
