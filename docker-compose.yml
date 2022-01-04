@@ -60,6 +60,7 @@ services:
 
   redis:
     image: redis:6-alpine
+    env_file: settings.env
     command: "redis-server --appendonly yes"
     deploy:
       replicas: 1
