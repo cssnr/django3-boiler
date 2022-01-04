@@ -3,7 +3,7 @@ version: '3.8'
 services:
   nginx:
     build: ./nginx
-    image: registry.hosted-domains.com/${GIT_REPO}/${GIT_ORG}-nginx:${VERSION}
+    image: registry.hosted-domains.com/${GIT_ORG}/${GIT_REPO}-nginx:${VERSION}
     deploy:
       mode: global
       labels:
@@ -31,7 +31,7 @@ services:
 
   app:
     build: ./app
-    image: registry.hosted-domains.com/${GIT_REPO}/${GIT_ORG}-app:${VERSION}
+    image: registry.hosted-domains.com/${GIT_ORG}/${GIT_REPO}-app:${VERSION}
     env_file: ${ENV_FILE}
     command: "gunicorn djboiler.wsgi:application -w 2 -b 0.0.0.0:9000"
     deploy:
@@ -44,7 +44,7 @@ services:
       - redis
 
   worker:
-    image: registry.hosted-domains.com/${GIT_REPO}/${GIT_ORG}-app:${VERSION}
+    image: registry.hosted-domains.com/${GIT_ORG}/${GIT_REPO}-app:${VERSION}
     env_file: ${ENV_FILE}
     command: "celery -A djboiler worker -l INFO -c 2"
     deploy:
@@ -56,7 +56,7 @@ services:
       - redis
 
   beat:
-    image: registry.hosted-domains.com/${GIT_REPO}/${GIT_ORG}-app:${VERSION}
+    image: registry.hosted-domains.com/${GIT_ORG}/${GIT_REPO}-app:${VERSION}
     env_file: ${ENV_FILE}
     command: "celery -A djboiler beat -l INFO -S django"
     deploy:
