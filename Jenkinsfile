@@ -4,22 +4,21 @@
 
 pipeline {
     agent {
-        label 'manager'
+        label 'jenkins-slave-docker'
     }
     options {
         buildDiscarder(logRotator(numToKeepStr:'5'))
         timeout(time: 1, unit: 'HOURS')
     }
     environment {
-        DISCORD_ID = "smashed-alerts"
+        DISCORD_ID = "discord-hook-smashed"
         COMPOSE_FILE = "docker-compose-swarm.yml"
 
         BUILD_CAUSE = getBuildCause()
         VERSION = getVersion("${GIT_BRANCH}")
         GIT_ORG = getGitGroup("${GIT_URL}")
         GIT_REPO = getGitRepo("${GIT_URL}")
-        BASE_NAME = "${GIT_ORG}-${GIT_REPO}"
-        SERVICE_NAME = "${BASE_NAME}"
+        SERVICE_NAME = "${GIT_ORG}-${GIT_REPO}"
         NFS_HOST = "nfs01.cssnr.com"
         NFS_BASE = "/data/docker"
     }
@@ -27,13 +26,13 @@ pipeline {
         stage('Init') {
             steps {
                 echo "\n--- Build Details ---\n" +
-                        "GIT_URL:       ${GIT_URL}\n" +
-                        "JOB_NAME:      ${JOB_NAME}\n" +
-                        "COMPOSE_FILE:  ${COMPOSE_FILE}\n" +
-                        "SERVICE_NAME:  ${SERVICE_NAME}\n" +
-                        "NFS_HOST:      ${NFS_HOST}\n" +
                         "BUILD_CAUSE:   ${BUILD_CAUSE}\n" +
                         "GIT_BRANCH:    ${GIT_BRANCH}\n" +
+                        "GIT_URL:       ${GIT_URL}\n" +
+                        "JOB_NAME:      ${JOB_NAME}\n" +
+                        "SERVICE_NAME:  ${SERVICE_NAME}\n" +
+                        "COMPOSE_FILE:  ${COMPOSE_FILE}\n" +
+                        "NFS_HOST:      ${NFS_HOST}\n" +
                         "VERSION:       ${VERSION}\n"
                 verifyBuild()
                 sendDiscord("${DISCORD_ID}", "Pipeline Started by: ${BUILD_CAUSE}")
@@ -47,23 +46,24 @@ pipeline {
                 }
             }
             environment {
-                STACK_NAME = "dev-${SERVICE_NAME}"
+                ENV = "dev"
+                ENV_FILE = "service-configs/services/${SERVICE_NAME}/${ENV}.env"
+                STACK_NAME = "${ENV}_${SERVICE_NAME}"
                 NFS_DIRECTORY = "${NFS_BASE}/${STACK_NAME}"
-                TRAEFIK_HOST = "`djboiler-dev.sapps.me`"
-                ENV_FILE = "deploy-configs/services/${SERVICE_NAME}/dev.env"
+                TRAEFIK_HOST = "django3-boiler-dev.sapps.me"
             }
             steps {
-                echo "\n--- Starting Dev Deploy ---\n" +
+                echo "\n--- Starting ${ENV} Deploy ---\n" +
                         "STACK_NAME:        ${STACK_NAME}\n" +
                         "NFS_DIRECTORY:     ${NFS_DIRECTORY}\n" +
                         "TRAEFIK_HOST:      ${TRAEFIK_HOST}\n" +
                         "ENV_FILE:          ${ENV_FILE}\n"
-                sendDiscord("${DISCORD_ID}", "Dev Deploy Started")
+                sendDiscord("${DISCORD_ID}", "${ENV} Deploy Started")
                 setupNfs("${STACK_NAME}")
                 updateCompose("${COMPOSE_FILE}", "STACK_NAME", "${STACK_NAME}")
                 stackPush("${COMPOSE_FILE}")
                 stackDeploy("${COMPOSE_FILE}", "${STACK_NAME}")
-                sendDiscord("${DISCORD_ID}", "Dev Deploy Finished")
+                sendDiscord("${DISCORD_ID}", "${ENV} Deploy Finished")
             }
         }
         stage('Prod Deploy') {
@@ -74,23 +74,24 @@ pipeline {
                 }
             }
             environment {
-                STACK_NAME = "prod-${SERVICE_NAME}"
+                ENV = "prod"
+                ENV_FILE = "service-configs/services/${SERVICE_NAME}/${ENV}.env"
+                STACK_NAME = "${ENV}_${SERVICE_NAME}"
                 NFS_DIRECTORY = "${NFS_BASE}/${STACK_NAME}"
-                TRAEFIK_HOST = "`djboiler.sapps.me`"
-                ENV_FILE = "deploy-configs/services/${SERVICE_NAME}/prod.env"
+                TRAEFIK_HOST = "django3-boiler.sapps.me"
             }
             steps {
-                echo "\n--- Starting Prod Deploy ---\n" +
+                echo "\n--- Starting ${ENV} Deploy ---\n" +
                         "STACK_NAME:        ${STACK_NAME}\n" +
                         "NFS_DIRECTORY:     ${NFS_DIRECTORY}\n" +
                         "TRAEFIK_HOST:      ${TRAEFIK_HOST}\n" +
                         "ENV_FILE:          ${ENV_FILE}\n"
-                sendDiscord("${DISCORD_ID}", "Prod Deploy Started")
+                sendDiscord("${DISCORD_ID}", "${ENV} Deploy Started")
                 setupNfs("${STACK_NAME}")
                 updateCompose("${COMPOSE_FILE}", "STACK_NAME", "${STACK_NAME}")
                 stackPush("${COMPOSE_FILE}")
                 stackDeploy("${COMPOSE_FILE}", "${STACK_NAME}")
-                sendDiscord("${DISCORD_ID}", "Prod Deploy Finished")
+                sendDiscord("${DISCORD_ID}", "${ENV} Deploy Finished")
             }
         }
     }

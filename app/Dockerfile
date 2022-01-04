@@ -1,5 +1,4 @@
-FROM python:3.9-alpine
-ENV TZ=UTC
+FROM python:3.8-alpine
 
 RUN apk add --update --no-cache \
     alpine-sdk \
