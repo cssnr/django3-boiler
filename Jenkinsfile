@@ -50,7 +50,7 @@ pipeline {
                 ENV_FILE = "service-configs/services/${SERVICE_NAME}/${ENV}.env"
                 STACK_NAME = "${ENV}_${SERVICE_NAME}"
                 NFS_DIRECTORY = "${NFS_BASE}/${STACK_NAME}"
-                TRAEFIK_HOST = "djboiler-dev.sapps.me"
+                TRAEFIK_HOST = "django3-boiler-dev.sapps.me"
             }
             steps {
                 echo "\n--- Starting ${ENV} Deploy ---\n" +
@@ -78,7 +78,7 @@ pipeline {
                 ENV_FILE = "service-configs/services/${SERVICE_NAME}/${ENV}.env"
                 STACK_NAME = "${ENV}_${SERVICE_NAME}"
                 NFS_DIRECTORY = "${NFS_BASE}/${STACK_NAME}"
-                TRAEFIK_HOST = "djboiler.sapps.me"
+                TRAEFIK_HOST = "django3-boiler.sapps.me"
             }
             steps {
                 echo "\n--- Starting ${ENV} Deploy ---\n" +
